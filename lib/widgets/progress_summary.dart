@@ -10,6 +10,21 @@ class ProgressSummary extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tasks = ref.watch(tasksProvider);
+    int totalTasks = tasks.length;
+    int completedTasks = tasks
+        .where((element) => element.category == 'Completed')
+        .toList()
+        .length;
+    double percentCompletedTasks = 1;
+
+    if (totalTasks != 0) {
+      percentCompletedTasks = (completedTasks / totalTasks).toDouble();
+    }
+
+    String stringtotalTasks =
+        totalTasks > 1 ? '$totalTasks tasks' : '$totalTasks task';
+    String stringCompletedTasks = 'Completed $completedTasks/$totalTasks';
+    String stringPercentCompletedTasks = '${percentCompletedTasks * 100}%';
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 175,
@@ -22,9 +37,9 @@ class ProgressSummary extends ConsumerWidget {
           fit: BoxFit.cover,
         ),
       ),
-      child: const Column(
+      child: Column(
         children: [
-          Align(
+          const Align(
             alignment: Alignment.topLeft,
             child: Text(
               'Progress summary',
@@ -34,47 +49,47 @@ class ProgressSummary extends ConsumerWidget {
                   fontWeight: FontWeight.bold),
             ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Align(
             alignment: Alignment.topLeft,
             child: Text(
-              '15 Tasks',
-              style: TextStyle(
+              stringtotalTasks,
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 15,
               ),
             ),
           ),
-          SizedBox(height: 17),
+          const SizedBox(height: 17),
           Row(mainAxisSize: MainAxisSize.min, children: [
             Text(
-              'Completed 5/15',
-              style: TextStyle(
+              stringCompletedTasks,
+              style: const TextStyle(
                 color: Colors.white,
                 // fontSize: 15,
               ),
             ),
-            Spacer(),
+            const Spacer(),
             Text(
-              '30%',
-              style: TextStyle(
+              stringPercentCompletedTasks,
+              style: const TextStyle(
                 color: Colors.white,
                 // fontSize: 20,
               ),
             ),
           ]),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Align(
             alignment: Alignment.topLeft,
             child: SizedBox(
               width: 400,
               height: 8,
               child: ClipRRect(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
                 child: LinearProgressIndicator(
-                  value: 0.3,
-                  backgroundColor: Color.fromARGB(255, 118, 115, 115),
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  value: percentCompletedTasks,
+                  backgroundColor: const Color.fromARGB(255, 118, 115, 115),
+                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
               ),
             ),
