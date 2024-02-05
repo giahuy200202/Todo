@@ -1,4 +1,4 @@
-name: todo_list
+name: todo
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -36,7 +36,6 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_riverpod: ^2.4.10
-  transparent_image: ^2.0.1
 
 dev_dependencies:
   flutter_test:

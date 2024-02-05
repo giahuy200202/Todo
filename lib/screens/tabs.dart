@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list/screens/home.dart';
+import 'package:todo/screens/home.dart';
 
 class TabsScreen extends StatefulWidget {
   const TabsScreen({super.key});
