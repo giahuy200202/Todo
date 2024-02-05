@@ -23,7 +23,7 @@ class TasksNotifier extends StateNotifier<List<Task>> {
     if (state.isNotEmpty) {
       for (var i = 0; i < state.length; i++) {
         if (state[i].id == id) {
-          state[i].isCompleted = true;
+          state[i].category = "Completed";
           return true;
         } else {
           return false;

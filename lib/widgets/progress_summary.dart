@@ -13,7 +13,7 @@ class ProgressSummary extends ConsumerWidget {
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 175,
-      margin: const EdgeInsets.only(left: 24, right: 24, top: 20),
+      margin: const EdgeInsets.only(top: 20),
       padding: const EdgeInsets.all(25),
       decoration: const BoxDecoration(
         borderRadius: BorderRadius.all(Radius.circular(12)),
@@ -48,7 +48,7 @@ class ProgressSummary extends ConsumerWidget {
           SizedBox(height: 17),
           Row(mainAxisSize: MainAxisSize.min, children: [
             Text(
-              'Progress - Completed 5/15',
+              'Completed 5/15',
               style: TextStyle(
                 color: Colors.white,
                 // fontSize: 15,
