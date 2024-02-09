@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/widgets/task_widget.dart';
+import 'package:todo/screens/task.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/providers/tasks_provider.dart';
 import 'package:todo/providers/options_provider.dart';
