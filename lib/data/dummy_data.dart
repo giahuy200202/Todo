@@ -46,7 +46,7 @@ var listTask = [
   Task(
     id: '7',
     title: 'Learn Deloyment',
-    content: 'Deploy a flutter app to ch play',
+    content: 'Deploy a flutter app to public',
     category: 'Completed',
     date: DateTime(2024, 2, 3),
   ),

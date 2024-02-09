@@ -13,11 +13,6 @@ class OptionsNotifier extends StateNotifier<Map<Option, String>> {
     };
     return true;
   }
-
-  // bool setSelectedPageIndex(int index) {
-  //   state = state..selectedPageIndex = index;
-  //   return true;
-  // }
 }
 
 final optionsProvider =

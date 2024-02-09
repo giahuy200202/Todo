@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo/screens/home.dart';
-import 'package:todo/screens/search.dart';
-import 'package:todo/screens/notification.dart';
-import 'package:todo/screens/profile.dart';
+import 'package:todo/screens/home_screen.dart';
+import 'package:todo/screens/search_screen.dart';
+import 'package:todo/screens/notification_screen.dart';
+import 'package:todo/screens/profile_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/providers/options_provider.dart';
 

@@ -22,14 +22,11 @@ class TasksNotifier extends StateNotifier<List<Task>> {
 
   bool markTaskCompleted(String id) {
     if (state.isNotEmpty) {
-      for (var i = 0; i < state.length; i++) {
-        if (state[i].id == id) {
-          state[i].category = "Completed";
-          return true;
-        } else {
-          return false;
-        }
-      }
+      state[state.indexWhere((element) => element.id == id)].category =
+          "Completed";
+      final temp = state[state.indexWhere((element) => element.id == id)];
+      state = state.where((t) => t.id != id).toList();
+      state = [...state, temp];
     }
     return false;
   }

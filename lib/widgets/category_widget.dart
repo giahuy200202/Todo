@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo/screens/task.dart';
+import 'package:todo/screens/task_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/providers/tasks_provider.dart';
 import 'package:todo/providers/options_provider.dart';
@@ -29,7 +29,7 @@ class CategoryDetail extends ConsumerWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            final wasChanged = ref
+            ref
                 .read(optionsProvider.notifier)
                 .setCategoryOption(title.split(' ')[0]);
           },

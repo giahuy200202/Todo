@@ -3,7 +3,7 @@ import 'package:todo/providers/options_provider.dart';
 import 'package:todo/widgets/home_widget.dart';
 import 'package:todo/widgets/progress_widget.dart';
 import 'package:todo/widgets/category_widget.dart';
-import 'package:todo/screens/task.dart';
+import 'package:todo/screens/task_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/providers/tasks_provider.dart';
 
