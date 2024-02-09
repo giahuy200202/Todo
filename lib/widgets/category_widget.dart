@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:todo/widgets/task_widget.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/providers/tasks_provider.dart';
+import 'package:todo/providers/options_provider.dart';
 
-class CategoryDetail extends StatelessWidget {
+class CategoryDetail extends ConsumerWidget {
   const CategoryDetail({
     super.key,
     required this.title,
@@ -13,7 +17,8 @@ class CategoryDetail extends StatelessWidget {
   final String numOfTasks;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final options = ref.watch(optionsProvider);
     return Container(
       margin: const EdgeInsets.only(top: 18),
       decoration: const BoxDecoration(
@@ -24,7 +29,9 @@ class CategoryDetail extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            print(title);
+            final wasChanged = ref
+                .read(optionsProvider.notifier)
+                .setCategoryOption(title.split(' ')[0]);
           },
           customBorder: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),

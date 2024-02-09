@@ -10,21 +10,29 @@ class ProgressSummary extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final tasks = ref.watch(tasksProvider);
+
     int totalTasks = tasks.length;
+
     int completedTasks = tasks
         .where((element) => element.category == 'Completed')
         .toList()
         .length;
-    double percentCompletedTasks = 1;
+    int percentCompletedTasks = 1;
 
     if (totalTasks != 0) {
-      percentCompletedTasks = (completedTasks / totalTasks).toDouble();
+      percentCompletedTasks =
+          ((completedTasks / totalTasks) * 100).toDouble().round();
+    } else {
+      percentCompletedTasks = percentCompletedTasks * 100;
     }
 
     String stringtotalTasks =
         totalTasks > 1 ? '$totalTasks tasks' : '$totalTasks task';
+
     String stringCompletedTasks = 'Completed $completedTasks/$totalTasks';
-    String stringPercentCompletedTasks = '${percentCompletedTasks * 100}%';
+
+    String stringPercentCompletedTasks = '$percentCompletedTasks%';
+
     return Container(
       width: MediaQuery.of(context).size.width,
       height: 175,
@@ -87,7 +95,7 @@ class ProgressSummary extends ConsumerWidget {
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 child: LinearProgressIndicator(
-                  value: percentCompletedTasks,
+                  value: (percentCompletedTasks / 100).toDouble(),
                   backgroundColor: const Color.fromARGB(255, 118, 115, 115),
                   valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
                 ),

@@ -1,9 +1,10 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:todo/models/task.dart';
+import 'package:todo/data/dummy_data.dart';
 
 class TasksNotifier extends StateNotifier<List<Task>> {
-  TasksNotifier() : super([]);
+  TasksNotifier() : super(listTask);
 
   bool createNewTask(Task task) {
     if (state.isNotEmpty) {

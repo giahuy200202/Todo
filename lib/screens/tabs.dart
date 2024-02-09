@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:todo/screens/home.dart';
+import 'package:todo/screens/search.dart';
+import 'package:todo/screens/notification.dart';
+import 'package:todo/screens/profile.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/providers/options_provider.dart';
 
-class TabsScreen extends StatefulWidget {
+class TabsScreen extends ConsumerStatefulWidget {
   const TabsScreen({super.key});
 
   @override
-  State<TabsScreen> createState() {
+  ConsumerState<TabsScreen> createState() {
     return _TabsScreenState();
   }
 }
 
-class _TabsScreenState extends State<TabsScreen> {
+class _TabsScreenState extends ConsumerState<TabsScreen> {
   int _selectedPageIndex = 0;
 
   void _selectPage(int index) {
@@ -21,37 +26,23 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var activePageTitle = 'Homepage';
+    // final options = ref.watch(optionsProvider);
+    Widget screen = const HomeScreen();
 
-    if (_selectedPageIndex == 1) {
-      // activePage = MealsScreen(
-      //   meals: _favoriteMeals,
-      //   onToggleFavorite: _toggleMealFavoriteStatus,
-      // );
-      activePageTitle = 'Search';
+    if (_selectedPageIndex == 0) {
+      screen = const HomeScreen();
+    } else if (_selectedPageIndex == 1) {
+      screen = const SearchScreen();
     } else if (_selectedPageIndex == 2) {
-      activePageTitle = 'Notifications';
+      screen = const NotificationScreen();
     } else if (_selectedPageIndex == 3) {
-      activePageTitle = 'Your profile';
+      screen = const NotificationScreen();
+    } else if (_selectedPageIndex == 4) {
+      screen = const ProfileScreen();
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: Column(children: [
-          const SizedBox(height: 23),
-          Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              activePageTitle,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 28,
-              ),
-            ),
-          ),
-        ]),
-      ),
-      body: const HomeScreen(),
+      body: screen,
       bottomNavigationBar: BottomNavigationBar(
         onTap: _selectPage,
         currentIndex: _selectedPageIndex,
