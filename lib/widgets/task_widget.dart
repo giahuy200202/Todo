@@ -33,6 +33,7 @@ class _TaskWidgetState extends ConsumerState<TaskWidget> {
   @override
   Widget build(BuildContext context) {
     final tasks = ref.watch(tasksProvider);
+
     Icon icon = isChecked || widget.category == 'Completed'
         ? const Icon(Icons.check_circle,
             size: 30, color: Color.fromARGB(255, 121, 123, 125))
@@ -41,6 +42,7 @@ class _TaskWidgetState extends ConsumerState<TaskWidget> {
             size: 30,
             color: Color.fromARGB(255, 151, 153, 155),
           );
+
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: const BoxDecoration(

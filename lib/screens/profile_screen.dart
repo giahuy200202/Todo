@@ -25,7 +25,7 @@ class ProfileScreen extends ConsumerWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 35),
+            const SizedBox(height: 40),
             const Align(
               alignment: Alignment.topLeft,
               child: Padding(

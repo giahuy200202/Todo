@@ -22,6 +22,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     setState(() {
       _selectedPageIndex = index;
     });
+    ref.read(optionsProvider.notifier).setCategoryOption('');
   }
 
   @override
