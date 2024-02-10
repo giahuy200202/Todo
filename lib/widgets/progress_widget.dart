@@ -13,10 +13,8 @@ class ProgressSummary extends ConsumerWidget {
 
     int totalTasks = tasks.length;
 
-    int completedTasks = tasks
-        .where((element) => element.category == 'Completed')
-        .toList()
-        .length;
+    int completedTasks =
+        tasks.where((element) => element.isCompleted).toList().length;
     int percentCompletedTasks = 1;
 
     if (totalTasks != 0) {

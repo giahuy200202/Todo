@@ -4,12 +4,12 @@ class Task {
     required this.title,
     required this.content,
     required this.date,
-    required this.category,
+    required this.isCompleted,
   });
 
   final String id;
   final String title;
   final String content;
   final DateTime date;
-  String category;
+  bool isCompleted;
 }

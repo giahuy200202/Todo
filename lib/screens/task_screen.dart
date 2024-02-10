@@ -13,13 +13,41 @@ class TaskScreen extends ConsumerWidget {
 
   final String option;
 
+  String getDateFormatted(DateTime date, DateTime today, bool isCompleted) {
+    if (date.compareTo(today) == 0 && !isCompleted) {
+      return 'Today - ${DateFormat("dd/MM/yyyy").format(date).toString()}';
+    } else if (date.compareTo(today) > 0 && !isCompleted) {
+      return 'Upcoming - ${DateFormat("dd/MM/yyyy").format(date).toString()}';
+    } else if (date.compareTo(today) < 0 && !isCompleted) {
+      return 'Overdue - ${DateFormat("dd/MM/yyyy").format(date).toString()}';
+    }
+    return 'Completed';
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String titleScreen = '$option tasks';
+
+    String stringDeadline = '';
+
     var tasks = ref.watch(tasksProvider);
-    tasks = option == 'All'
-        ? tasks.toList()
-        : tasks.where((t) => t.category == option).toList();
+
+    var getToday = DateTime.now().toUtc();
+
+    var getFormatDate = DateTime(getToday.year, getToday.month, getToday.day);
+
+    if (option == 'Today') {
+      tasks = tasks
+          .where((t) => t.date.compareTo(getFormatDate) == 0 && !t.isCompleted)
+          .toList();
+    } else if (option == 'Upcoming') {
+      tasks = tasks
+          .where((t) => t.date.compareTo(getFormatDate) > 0 && !t.isCompleted)
+          .toList();
+    } else if (option == 'Completed') {
+      tasks = tasks.where((t) => t.isCompleted).toList();
+    }
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.only(left: 24, right: 24),
@@ -77,10 +105,9 @@ class TaskScreen extends ConsumerWidget {
                           id: task.id,
                           title: task.title,
                           content: task.content,
-                          date: option == 'Completed'
-                              ? 'Completed'
-                              : 'Due in ${DateFormat("dd-MM-yyyy").format(task.date).toString()}',
-                          category: task.category,
+                          date: getDateFormatted(
+                              task.date, getFormatDate, task.isCompleted),
+                          isCompleted: task.isCompleted,
                         ))
                   ],
                 ),

@@ -22,8 +22,7 @@ class TasksNotifier extends StateNotifier<List<Task>> {
 
   bool markTaskCompleted(String id) {
     if (state.isNotEmpty) {
-      state[state.indexWhere((element) => element.id == id)].category =
-          "Completed";
+      state[state.indexWhere((element) => element.id == id)].isCompleted = true;
       final temp = state[state.indexWhere((element) => element.id == id)];
       state = state.where((t) => t.id != id).toList();
       state = [...state, temp];

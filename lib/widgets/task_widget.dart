@@ -12,14 +12,14 @@ class TaskWidget extends ConsumerStatefulWidget {
     required this.content,
     required this.date,
     required this.id,
-    required this.category,
+    required this.isCompleted,
   });
 
   final String title;
   final String content;
   final String date;
   final String id;
-  final String category;
+  final bool isCompleted;
 
   @override
   ConsumerState<TaskWidget> createState() {
@@ -34,7 +34,7 @@ class _TaskWidgetState extends ConsumerState<TaskWidget> {
   Widget build(BuildContext context) {
     final tasks = ref.watch(tasksProvider);
 
-    Icon icon = isChecked || widget.category == 'Completed'
+    Icon icon = isChecked || widget.isCompleted
         ? const Icon(Icons.check_circle,
             size: 30, color: Color.fromARGB(255, 121, 123, 125))
         : const Icon(
@@ -141,7 +141,7 @@ class _TaskWidgetState extends ConsumerState<TaskWidget> {
                   const Spacer(),
                   InkWell(
                     onTap: () {
-                      if (widget.category != 'Completed') {
+                      if (!widget.isCompleted) {
                         setState(() {
                           isChecked = true;
                         });

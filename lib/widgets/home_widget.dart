@@ -12,10 +12,23 @@ class HomeWidget extends ConsumerWidget {
   });
 
   int getNumOfTasks(List task, String category) {
-    return task
-        .where((element) => element.category == category)
-        .toList()
-        .length;
+    var getToday = DateTime.now().toUtc();
+    var getFormatDate = DateTime(getToday.year, getToday.month, getToday.day);
+    if (category == 'Today') {
+      return task
+          .where((t) => t.date.compareTo(getFormatDate) == 0)
+          .toList()
+          .length;
+    } else if (category == 'Upcoming') {
+      return task
+          .where((t) => t.date.compareTo(getFormatDate) > 0)
+          .toList()
+          .length;
+    } else if (category == 'Completed') {
+      return task.where((t) => t.isCompleted).toList().length;
+    } else {
+      return task.length;
+    }
   }
 
   @override
@@ -56,10 +69,7 @@ class HomeWidget extends ConsumerWidget {
             CategoryDetail(
               title: "All tasks",
               icon: const Icon(Icons.list, size: 45),
-              numOfTasks: (getNumOfTasks(tasks, 'Today') +
-                      getNumOfTasks(tasks, 'Upcoming') +
-                      getNumOfTasks(tasks, 'Completed'))
-                  .toString(),
+              numOfTasks: getNumOfTasks(tasks, 'All').toString(),
             ),
             CategoryDetail(
               title: "Today tasks",
