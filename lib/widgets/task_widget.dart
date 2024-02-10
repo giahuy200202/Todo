@@ -5,6 +5,8 @@ import 'package:todo/providers/tasks_provider.dart';
 import 'package:todo/providers/options_provider.dart';
 import 'dart:async';
 
+import 'package:todo/widgets/task_modal.dart';
+
 class TaskWidget extends ConsumerStatefulWidget {
   const TaskWidget({
     super.key,
@@ -53,9 +55,17 @@ class _TaskWidgetState extends ConsumerState<TaskWidget> {
         color: Colors.transparent,
         child: InkWell(
           onTap: () {
-            ref
-                .read(optionsProvider.notifier)
-                .setCategoryOption(widget.title.split(' ')[0]);
+            showModalBottomSheet(
+                context: context,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(15)),
+                ),
+                builder: (context) => TaskModal(
+                    title: widget.title,
+                    content: widget.content,
+                    date: widget.date,
+                    id: widget.id,
+                    isCompleted: widget.isCompleted));
           },
           customBorder: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -110,7 +120,7 @@ class _TaskWidgetState extends ConsumerState<TaskWidget> {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 7),
+                      const SizedBox(height: 8),
                       Row(
                         children: [
                           const Icon(

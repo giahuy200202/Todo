@@ -16,12 +16,12 @@ class HomeWidget extends ConsumerWidget {
     var getFormatDate = DateTime(getToday.year, getToday.month, getToday.day);
     if (category == 'Today') {
       return task
-          .where((t) => t.date.compareTo(getFormatDate) == 0)
+          .where((t) => t.date.compareTo(getFormatDate) == 0 && !t.isCompleted)
           .toList()
           .length;
     } else if (category == 'Upcoming') {
       return task
-          .where((t) => t.date.compareTo(getFormatDate) > 0)
+          .where((t) => t.date.compareTo(getFormatDate) > 0 && !t.isCompleted)
           .toList()
           .length;
     } else if (category == 'Completed') {
