@@ -8,16 +8,12 @@ class TasksNotifier extends StateNotifier<List<Task>> {
 
   bool createNewTask(Task task) {
     if (state.isNotEmpty) {
-      final listTaskExist = state.where((t) => t.id != task.id);
+      final listTaskExist = state.where((t) => t.id == task.id);
       if (listTaskExist.isEmpty) {
         state = [...state, task];
-        return true;
       }
-    } else {
-      state = [...state, task];
-      return true;
     }
-    return false;
+    return true;
   }
 
   bool markTaskCompleted(String id) {

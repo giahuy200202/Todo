@@ -6,6 +6,7 @@ import 'package:todo/widgets/category_widget.dart';
 import 'package:todo/screens/task_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/providers/tasks_provider.dart';
+import 'package:todo/models/task.dart';
 
 class CreateScreen extends ConsumerStatefulWidget {
   const CreateScreen({super.key});
@@ -119,6 +120,10 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                       horizontal: 15,
                     ),
                     hintText: 'Enter task\'s title',
+                    hintStyle: const TextStyle(
+                      color: Color.fromARGB(255, 114, 111, 111),
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
@@ -139,6 +144,8 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                 child: TextField(
                   style: const TextStyle(
                     fontSize: 17,
+                    color: Color.fromARGB(255, 114, 111, 111),
+                    fontWeight: FontWeight.w500,
                   ),
                   readOnly: true,
                   controller: dateController,
@@ -174,12 +181,9 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
               ),
               const SizedBox(height: 10),
               SizedBox(
-                height: 180,
+                height: 80,
                 child: TextField(
                   controller: _contentController,
-                  keyboardType: TextInputType.multiline,
-                  minLines: 5, //Normal textInputField will be displayed
-                  maxLines: 5,
                   style: const TextStyle(
                     fontSize: 17,
                   ),
@@ -196,10 +200,14 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                       horizontal: 15,
                     ),
                     hintText: 'Enter task\'s content',
+                    hintStyle: const TextStyle(
+                      color: Color.fromARGB(255, 114, 111, 111),
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
               Align(
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
@@ -236,14 +244,42 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                       return;
                     }
 
-                    // widget.onAddExpense(
-                    //   Expense(
-                    //     title: _titleController.text,
-                    //     amount: enteredAmount,
-                    //     date: _selectedDate!,
-                    //     category: _selectedCategory,
-                    //   ),
-                    // );
+                    ref.read(tasksProvider.notifier).createNewTask(Task(
+                          id: (tasks.length + 1).toString(),
+                          title: _titleController.text,
+                          content: _contentController.text,
+                          date: _selectedDate!,
+                          isCompleted: false,
+                        ));
+
+                    // print(tasks);
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        backgroundColor: Colors.white,
+                        title: const Text('Success'),
+                        content: const Text(
+                          'Create new task successfully',
+                          style: TextStyle(
+                            fontSize: 17,
+                          ),
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(ctx);
+                            },
+                            child: const Text(
+                              'Ok',
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.black, // background
