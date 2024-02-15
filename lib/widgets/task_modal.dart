@@ -62,7 +62,6 @@ class _TaskModalState extends ConsumerState<TaskModal> {
                         alignment: Alignment.topLeft,
                         child: Text(
                           widget.title,
-                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 25,
@@ -97,16 +96,12 @@ class _TaskModalState extends ConsumerState<TaskModal> {
                         const SizedBox(width: 5),
                         Align(
                           alignment: Alignment.topLeft,
-                          child: SizedBox(
-                            width: 235,
-                            child: Text(
-                              widget.date,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                overflow: TextOverflow.ellipsis,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w500,
-                              ),
+                          child: Text(
+                            widget.date,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
@@ -116,38 +111,38 @@ class _TaskModalState extends ConsumerState<TaskModal> {
                     SizedBox(
                       width: MediaQuery.of(context).size.width,
                       child: ElevatedButton(
-                          onPressed: widget.isCompleted || isChecked
-                              ? null
-                              : () {
-                                  if (!widget.isCompleted) {
+                        onPressed: widget.isCompleted || isChecked
+                            ? null
+                            : () {
+                                if (!widget.isCompleted) {
+                                  setState(() {
+                                    isChecked = true;
+                                  });
+                                  Timer(const Duration(seconds: 2), () {
+                                    ref
+                                        .read(tasksProvider.notifier)
+                                        .markTaskCompleted(widget.id);
+                                    Navigator.pop(context);
                                     setState(() {
-                                      isChecked = true;
+                                      isChecked = false;
                                     });
-                                    Timer(const Duration(seconds: 2), () {
-                                      ref
-                                          .read(tasksProvider.notifier)
-                                          .markTaskCompleted(widget.id);
-                                      Navigator.pop(context);
-                                      setState(() {
-                                        isChecked = false;
-                                      });
-                                    });
-                                  }
-                                },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.black, // background
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(11),
-                              ),
-                              padding:
-                                  const EdgeInsets.only(bottom: 14, top: 14),
-                              textStyle: const TextStyle(
-                                fontSize: 18,
-                              )), // foreground
-                          child: widget.isCompleted || isChecked
-                              ? const Text('Completed')
-                              : const Text('Mark as completed')),
+                                  });
+                                }
+                              },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.black, // background
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(11),
+                            ),
+                            padding: const EdgeInsets.only(bottom: 14, top: 14),
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                            )), // foreground
+                        child: widget.isCompleted || isChecked
+                            ? const Text('Completed')
+                            : const Text('Mark as completed'),
+                      ),
                     ),
                   ],
                 ),

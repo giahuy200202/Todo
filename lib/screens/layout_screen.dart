@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/screens/create_screen.dart';
 import 'package:todo/screens/home_screen.dart';
 import 'package:todo/screens/search_screen.dart';
 import 'package:todo/screens/notification_screen.dart';
@@ -35,7 +36,7 @@ class _TabsScreenState extends ConsumerState<TabsScreen> {
     } else if (_selectedPageIndex == 1) {
       screen = const SearchScreen();
     } else if (_selectedPageIndex == 2) {
-      screen = const NotificationScreen();
+      screen = const CreateScreen();
     } else if (_selectedPageIndex == 3) {
       screen = const NotificationScreen();
     } else if (_selectedPageIndex == 4) {
