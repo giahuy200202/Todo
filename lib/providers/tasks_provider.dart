@@ -16,6 +16,11 @@ class TasksNotifier extends StateNotifier<List<Task>> {
     return true;
   }
 
+  bool changeListTasks(List<Task> listTask) {
+    state = [...listTask];
+    return true;
+  }
+
   bool markTaskCompleted(String id) {
     if (state.isNotEmpty) {
       state[state.indexWhere((element) => element.id == id)].isCompleted = true;

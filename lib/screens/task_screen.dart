@@ -49,71 +49,76 @@ class TaskScreen extends ConsumerWidget {
     }
 
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(left: 24, right: 24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            const SizedBox(height: 40),
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            ref
-                                .read(optionsProvider.notifier)
-                                .setCategoryOption('');
-                          },
-                          child: const Icon(
-                            Icons.arrow_back_ios_sharp,
-                            size: 22,
-                            color: Colors.black,
+      body: SingleChildScrollView(
+        physics: const NeverScrollableScrollPhysics(),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 24, right: 24),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 40),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 20),
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              ref
+                                  .read(optionsProvider.notifier)
+                                  .setCategoryOption('');
+                            },
+                            child: const Icon(
+                              Icons.arrow_back_ios_sharp,
+                              size: 22,
+                              color: Colors.black,
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 20),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: SizedBox(
-                            width: 200,
-                            child: Text(
-                              titleScreen,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25,
+                          const SizedBox(width: 20),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: SizedBox(
+                              width: 200,
+                              child: Text(
+                                titleScreen,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 25,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 652,
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ...tasks.map((task) => TaskWidget(
+                ],
+              ),
+              SizedBox(
+                height: 652,
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      ...tasks.map(
+                        (task) => TaskWidget(
                           id: task.id,
                           title: task.title,
                           content: task.content,
                           date: getDateFormatted(
                               task.date, getFormatDate, task.isCompleted),
                           isCompleted: task.isCompleted,
-                        ))
-                  ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

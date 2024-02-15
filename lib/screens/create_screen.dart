@@ -18,8 +18,8 @@ class CreateScreen extends ConsumerStatefulWidget {
 }
 
 class _CreateScreenState extends ConsumerState<CreateScreen> {
-  final _titleController = TextEditingController();
-  final _contentController = TextEditingController();
+  var titleController = TextEditingController();
+  var contentController = TextEditingController();
   var dateController = TextEditingController(
     text: 'No date selected',
   );
@@ -27,8 +27,9 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
 
   @override
   void dispose() {
-    _titleController.dispose();
-    _contentController.dispose();
+    titleController.dispose();
+    contentController.dispose();
+    dateController.dispose();
     super.dispose();
   }
 
@@ -37,19 +38,24 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
     final firstDate = DateTime(now.year - 1, now.month, now.day);
     final pickedDate = await showDatePicker(
       context: context,
+      initialEntryMode: DatePickerEntryMode.calendarOnly,
       initialDate: now,
       firstDate: firstDate,
       lastDate: DateTime(3000),
       builder: (context, child) {
         return Theme(
           data: ThemeData.dark().copyWith(
-            colorScheme: const ColorScheme.dark(
+            colorScheme: const ColorScheme.light(
               primary: Colors.black,
               onPrimary: Colors.white,
               surface: Colors.white,
               onSurface: Colors.black,
             ),
-            dialogBackgroundColor: Colors.blue[900],
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.black, // button text color
+              ),
+            ),
           ),
           child: child!,
         );
@@ -103,7 +109,7 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
               SizedBox(
                 height: 80,
                 child: TextField(
-                  controller: _titleController,
+                  controller: titleController,
                   style: const TextStyle(
                     fontSize: 17,
                   ),
@@ -183,7 +189,7 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
               SizedBox(
                 height: 80,
                 child: TextField(
-                  controller: _contentController,
+                  controller: contentController,
                   style: const TextStyle(
                     fontSize: 17,
                   ),
@@ -212,15 +218,20 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                 alignment: Alignment.centerRight,
                 child: ElevatedButton(
                   onPressed: () {
-                    if (_titleController.text.trim().isEmpty ||
+                    if (titleController.text.trim().isEmpty ||
+                        contentController.text.trim().isEmpty ||
                         _selectedDate == null) {
                       showDialog(
                         context: context,
                         builder: (ctx) => AlertDialog(
                           backgroundColor: Colors.white,
+                          shape: const RoundedRectangleBorder(
+                              borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          )),
                           title: const Text('Invalid input'),
                           content: const Text(
-                            'Please make sure a valid title and date was entered.',
+                            'Please make sure a valid title, date and content was entered.',
                             style: TextStyle(
                               fontSize: 17,
                             ),
@@ -246,8 +257,8 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
 
                     ref.read(tasksProvider.notifier).createNewTask(Task(
                           id: (tasks.length + 1).toString(),
-                          title: _titleController.text,
-                          content: _contentController.text,
+                          title: titleController.text,
+                          content: contentController.text,
                           date: _selectedDate!,
                           isCompleted: false,
                         ));
