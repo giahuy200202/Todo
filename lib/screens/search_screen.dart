@@ -99,8 +99,12 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
                     ),
                     prefixIcon: const Icon(Icons.search),
                     suffixIcon: InkWell(
-                      onTap: () {},
-                      child: const Icon(Icons.mic),
+                      onTap: () {
+                        setState(() {
+                          searchController.text = '';
+                        });
+                      },
+                      child: const Icon(Icons.clear),
                     ),
                     hintText: 'Titles, Contents and More',
                     hintStyle: const TextStyle(
@@ -134,27 +138,51 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
                                       height: 5,
                                     ),
                                     ...leftColumnDiscoverData.map(
-                                      (data) => Padding(
-                                        padding: const EdgeInsets.only(top: 15),
-                                        child: SizedBox(
-                                          width: 185,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              const Icon(Icons.search),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                data,
-                                                style: const TextStyle(
-                                                  fontSize: 16,
+                                      (data) => InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            searchController.text = data;
+                                            listTask = tasks
+                                                .where(
+                                                  (task) => (task.id
+                                                          .toLowerCase()
+                                                          .contains(data
+                                                              .toLowerCase()) ||
+                                                      task.title
+                                                          .toLowerCase()
+                                                          .contains(data
+                                                              .toLowerCase()) ||
+                                                      task.content
+                                                          .toLowerCase()
+                                                          .contains(data
+                                                              .toLowerCase())),
+                                                )
+                                                .toList();
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15),
+                                          child: SizedBox(
+                                            width: 185,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                const Icon(Icons.search),
+                                                const SizedBox(
+                                                  width: 10,
                                                 ),
-                                              ),
-                                            ],
+                                                Text(
+                                                  data,
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -167,27 +195,51 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
                                       height: 5,
                                     ),
                                     ...rightColumnDiscoverData.map(
-                                      (data) => Padding(
-                                        padding: const EdgeInsets.only(top: 15),
-                                        child: SizedBox(
-                                          width: 175,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: [
-                                              const Icon(Icons.search),
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                data,
-                                                style: const TextStyle(
-                                                  fontSize: 16,
+                                      (data) => InkWell(
+                                        onTap: () {
+                                          setState(() {
+                                            searchController.text = data;
+                                            listTask = tasks
+                                                .where(
+                                                  (task) => (task.id
+                                                          .toLowerCase()
+                                                          .contains(data
+                                                              .toLowerCase()) ||
+                                                      task.title
+                                                          .toLowerCase()
+                                                          .contains(data
+                                                              .toLowerCase()) ||
+                                                      task.content
+                                                          .toLowerCase()
+                                                          .contains(data
+                                                              .toLowerCase())),
+                                                )
+                                                .toList();
+                                          });
+                                        },
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 15),
+                                          child: SizedBox(
+                                            width: 175,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                const Icon(Icons.search),
+                                                const SizedBox(
+                                                  width: 10,
                                                 ),
-                                              ),
-                                            ],
+                                                Text(
+                                                  data,
+                                                  style: const TextStyle(
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -212,19 +264,19 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
                             const SizedBox(
                               height: 20,
                             ),
-                            ...tasks.where((task) => !task.isCompleted).map(
-                                  (task) => TaskWidget(
-                                    id: task.id,
-                                    title: task.title,
-                                    content: task.content,
-                                    date: dateTimeHelper.getDateFormatted(
-                                      task.date,
-                                      getFormatDate,
-                                      task.isCompleted,
-                                    ),
-                                    isCompleted: task.isCompleted,
-                                  ),
+                            ...tasks.map(
+                              (task) => TaskWidget(
+                                id: task.id,
+                                title: task.title,
+                                content: task.content,
+                                date: dateTimeHelper.getDateFormatted(
+                                  task.date,
+                                  getFormatDate,
+                                  task.isCompleted,
                                 ),
+                                isCompleted: task.isCompleted,
+                              ),
+                            ),
                           ],
                         ),
                       )
