@@ -89,25 +89,35 @@ class TaskScreen extends ConsumerWidget {
                   ),
                 ],
               ),
-              SizedBox(
-                height: 652,
-                child: SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      ...tasks.map(
-                        (task) => TaskWidget(
-                          id: task.id,
-                          title: task.title,
-                          content: task.content,
-                          date: dateTimeHelper.getDateFormatted(
-                              task.date, getFormatDate, task.isCompleted),
-                          isCompleted: task.isCompleted,
+              tasks.isEmpty
+                  ? const Padding(
+                      padding: EdgeInsets.only(top: 310),
+                      child: Text(
+                        "Empty",
+                        style: TextStyle(
+                          fontSize: 18,
                         ),
                       ),
-                    ],
-                  ),
-                ),
-              )
+                    )
+                  : SizedBox(
+                      height: 652,
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            ...tasks.map(
+                              (task) => TaskWidget(
+                                id: task.id,
+                                title: task.title,
+                                content: task.content,
+                                date: dateTimeHelper.getDateFormatted(
+                                    task.date, getFormatDate, task.isCompleted),
+                                isCompleted: task.isCompleted,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
             ],
           ),
         ),

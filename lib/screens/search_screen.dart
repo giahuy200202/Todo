@@ -31,7 +31,7 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
 
     final dateTimeHelper = DateTimeHelper();
 
-    final leftColumnDiscoverData = ['flutter', 'react native', 'android'];
+    final leftColumnDiscoverData = ['flutter', 'react native', 'ux'];
     final rightColumnDiscoverData = ['animation', 'riverpod', 'http requests'];
 
     var getToday = DateTime.now().toUtc();
@@ -282,7 +282,7 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
                       )
                     : listTask.isEmpty
                         ? const Padding(
-                            padding: EdgeInsets.only(top: 10),
+                            padding: EdgeInsets.only(top: 260),
                             child: Text(
                               "No result",
                               style: TextStyle(
