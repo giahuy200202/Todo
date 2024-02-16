@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:todo/widgets/task_widget.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/providers/tasks_provider.dart';
 import 'package:todo/models/task.dart';
+import 'package:todo/helpers/date_time.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
@@ -28,23 +28,15 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     var tasks = ref.watch(tasksProvider);
+
+    final dateTimeHelper = DateTimeHelper();
+
     final leftColumnDiscoverData = ['flutter', 'react native', 'android'];
     final rightColumnDiscoverData = ['animation', 'riverpod', 'http requests'];
 
     var getToday = DateTime.now().toUtc();
 
     var getFormatDate = DateTime(getToday.year, getToday.month, getToday.day);
-
-    String getDateFormatted(DateTime date, DateTime today, bool isCompleted) {
-      if (date.compareTo(today) == 0 && !isCompleted) {
-        return 'Today - ${DateFormat("dd/MM/yyyy").format(date).toString()}';
-      } else if (date.compareTo(today) > 0 && !isCompleted) {
-        return 'Upcoming - ${DateFormat("dd/MM/yyyy").format(date).toString()}';
-      } else if (date.compareTo(today) < 0 && !isCompleted) {
-        return 'Overdue - ${DateFormat("dd/MM/yyyy").format(date).toString()}';
-      }
-      return 'Completed';
-    }
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -120,30 +112,8 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
               const SizedBox(height: 20),
               SizedBox(
                 height: 580,
-                child: searchController.text != ''
+                child: searchController.text == ''
                     ? SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            ...listTask.map(
-                              (task) => TaskWidget(
-                                id: task.id,
-                                title: task.title,
-                                content: task.content,
-                                date: getDateFormatted(
-                                  task.date,
-                                  getFormatDate,
-                                  task.isCompleted,
-                                ),
-                                isCompleted: task.isCompleted,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : SingleChildScrollView(
                         child: Column(
                           children: [
                             const Align(
@@ -247,7 +217,7 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
                                     id: task.id,
                                     title: task.title,
                                     content: task.content,
-                                    date: getDateFormatted(
+                                    date: dateTimeHelper.getDateFormatted(
                                       task.date,
                                       getFormatDate,
                                       task.isCompleted,
@@ -257,7 +227,39 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
                                 ),
                           ],
                         ),
-                      ),
+                      )
+                    : listTask.isEmpty
+                        ? const Padding(
+                            padding: EdgeInsets.only(top: 10),
+                            child: Text(
+                              "No result",
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          )
+                        : SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                const SizedBox(
+                                  height: 15,
+                                ),
+                                ...listTask.map(
+                                  (task) => TaskWidget(
+                                    id: task.id,
+                                    title: task.title,
+                                    content: task.content,
+                                    date: dateTimeHelper.getDateFormatted(
+                                      task.date,
+                                      getFormatDate,
+                                      task.isCompleted,
+                                    ),
+                                    isCompleted: task.isCompleted,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
               ),
             ],
           ),

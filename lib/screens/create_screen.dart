@@ -21,9 +21,14 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
   var titleController = TextEditingController();
   var contentController = TextEditingController();
   var dateController = TextEditingController(
-    text: 'No date selected',
+    text: 'Select date',
   );
-  DateTime? _selectedDate;
+  var timeController = TextEditingController(
+    text: 'Select time',
+  );
+
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
 
   @override
   void dispose() {
@@ -33,7 +38,7 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
     super.dispose();
   }
 
-  void _presentDatePicker() async {
+  void presentDatePicker() async {
     final now = DateTime.now();
     final firstDate = DateTime(now.year - 1, now.month, now.day);
     final pickedDate = await showDatePicker(
@@ -62,10 +67,44 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
       },
     );
     setState(() {
-      _selectedDate = pickedDate;
+      selectedDate = pickedDate;
     });
     dateController.text =
-        DateFormat('dd/MM/yyyy').format(_selectedDate!).toString();
+        DateFormat('dd/MM/yyyy').format(selectedDate!).toString();
+  }
+
+  void presentTimePicker() async {
+    final pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (context, child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: Theme(
+            data: ThemeData.dark().copyWith(
+              colorScheme: const ColorScheme.light(
+                primary: Colors.black,
+                onPrimary: Colors.white,
+                surface: Colors.white,
+                onSurface: Colors.black,
+              ),
+              textButtonTheme: TextButtonThemeData(
+                style: TextButton.styleFrom(
+                  foregroundColor: Colors.black, // button text color
+                ),
+              ),
+            ),
+            child: child!,
+          ),
+        );
+      },
+    );
+
+    setState(() {
+      selectedTime = pickedTime;
+    });
+
+    timeController.text = '${pickedTime!.hour}:${pickedTime.minute}';
   }
 
   @override
@@ -137,47 +176,6 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
               const Align(
                 alignment: Alignment.topLeft,
                 child: Text(
-                  "Date",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              SizedBox(
-                height: 80,
-                child: TextField(
-                  style: const TextStyle(
-                    fontSize: 17,
-                    color: Color.fromARGB(255, 114, 111, 111),
-                    fontWeight: FontWeight.w500,
-                  ),
-                  readOnly: true,
-                  controller: dateController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(9),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(9),
-                      borderSide: const BorderSide(color: Colors.black),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 18,
-                      horizontal: 15,
-                    ),
-                    suffixIcon: InkWell(
-                      onTap: _presentDatePicker,
-                      child: const Icon(Icons.calendar_month_outlined),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 5),
-              const Align(
-                alignment: Alignment.topLeft,
-                child: Text(
                   "Content",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
@@ -213,6 +211,109 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                   ),
                 ),
               ),
+              const SizedBox(height: 5),
+              Row(
+                children: [
+                  SizedBox(
+                    width: 170,
+                    child: Column(
+                      children: [
+                        const Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Date",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          height: 80,
+                          child: TextField(
+                            style: const TextStyle(
+                              fontSize: 17,
+                              color: Color.fromARGB(255, 114, 111, 111),
+                              fontWeight: FontWeight.w500,
+                            ),
+                            readOnly: true,
+                            controller: dateController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(9),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(9),
+                                borderSide:
+                                    const BorderSide(color: Colors.black),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 18,
+                                horizontal: 15,
+                              ),
+                              suffixIcon: InkWell(
+                                onTap: presentDatePicker,
+                                child:
+                                    const Icon(Icons.calendar_month_outlined),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const Spacer(),
+                  SizedBox(
+                    width: 170,
+                    child: Column(
+                      children: [
+                        const Align(
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Time",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        SizedBox(
+                          height: 80,
+                          child: TextField(
+                            style: const TextStyle(
+                              fontSize: 17,
+                              color: Color.fromARGB(255, 114, 111, 111),
+                              fontWeight: FontWeight.w500,
+                            ),
+                            readOnly: true,
+                            controller: timeController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(9),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(9),
+                                borderSide:
+                                    const BorderSide(color: Colors.black),
+                              ),
+                              contentPadding: const EdgeInsets.symmetric(
+                                vertical: 18,
+                                horizontal: 15,
+                              ),
+                              suffixIcon: InkWell(
+                                onTap: presentTimePicker,
+                                child: const Icon(Icons.timer_sharp),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
               const SizedBox(height: 20),
               Align(
                 alignment: Alignment.centerRight,
@@ -220,7 +321,8 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                   onPressed: () {
                     if (titleController.text.trim().isEmpty ||
                         contentController.text.trim().isEmpty ||
-                        _selectedDate == null) {
+                        selectedDate == null ||
+                        selectedTime == null) {
                       showDialog(
                         context: context,
                         builder: (ctx) => AlertDialog(
@@ -231,7 +333,7 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                           )),
                           title: const Text('Invalid input'),
                           content: const Text(
-                            'Please make sure a valid title, date and content was entered.',
+                            'Please make sure a valid title, content, date and time was entered.',
                             style: TextStyle(
                               fontSize: 17,
                             ),
@@ -259,7 +361,12 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                           id: (tasks.length + 1).toString(),
                           title: titleController.text,
                           content: contentController.text,
-                          date: _selectedDate!,
+                          date: DateTime(
+                              selectedDate!.year,
+                              selectedDate!.month,
+                              selectedDate!.day,
+                              selectedTime!.hour,
+                              selectedTime!.minute),
                           isCompleted: false,
                         ));
 
@@ -279,6 +386,10 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                           TextButton(
                             onPressed: () {
                               Navigator.pop(ctx);
+                              titleController.text = '';
+                              contentController.text = '';
+                              dateController.text = '';
+                              timeController.text = '';
                             },
                             child: const Text(
                               'Ok',

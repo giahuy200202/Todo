@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/providers/tasks_provider.dart';
 import 'package:todo/providers/options_provider.dart';
 import 'package:todo/widgets/task_widget.dart';
-import 'package:intl/intl.dart';
+import 'package:todo/helpers/date_time.dart';
 
 class TaskScreen extends ConsumerWidget {
   const TaskScreen({
@@ -13,22 +13,11 @@ class TaskScreen extends ConsumerWidget {
 
   final String option;
 
-  String getDateFormatted(DateTime date, DateTime today, bool isCompleted) {
-    if (date.compareTo(today) == 0 && !isCompleted) {
-      return 'Today - ${DateFormat("dd/MM/yyyy").format(date).toString()}';
-    } else if (date.compareTo(today) > 0 && !isCompleted) {
-      return 'Upcoming - ${DateFormat("dd/MM/yyyy").format(date).toString()}';
-    } else if (date.compareTo(today) < 0 && !isCompleted) {
-      return 'Overdue - ${DateFormat("dd/MM/yyyy").format(date).toString()}';
-    }
-    return 'Completed';
-  }
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String titleScreen = '$option tasks';
 
-    String stringDeadline = '';
+    final dateTimeHelper = DateTimeHelper();
 
     var tasks = ref.watch(tasksProvider);
 
@@ -38,7 +27,9 @@ class TaskScreen extends ConsumerWidget {
 
     if (option == 'Today') {
       tasks = tasks
-          .where((t) => t.date.compareTo(getFormatDate) == 0 && !t.isCompleted)
+          .where((t) =>
+              dateTimeHelper.isSameDate(t.date, getFormatDate) &&
+              !t.isCompleted)
           .toList();
     } else if (option == 'Upcoming') {
       tasks = tasks
@@ -108,7 +99,7 @@ class TaskScreen extends ConsumerWidget {
                           id: task.id,
                           title: task.title,
                           content: task.content,
-                          date: getDateFormatted(
+                          date: dateTimeHelper.getDateFormatted(
                               task.date, getFormatDate, task.isCompleted),
                           isCompleted: task.isCompleted,
                         ),
