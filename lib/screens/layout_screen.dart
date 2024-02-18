@@ -7,16 +7,16 @@ import 'package:todo/screens/profile_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/providers/options_provider.dart';
 
-class TabsScreen extends ConsumerStatefulWidget {
-  const TabsScreen({super.key});
+class LayoutScreen extends ConsumerStatefulWidget {
+  const LayoutScreen({super.key});
 
   @override
-  ConsumerState<TabsScreen> createState() {
+  ConsumerState<LayoutScreen> createState() {
     return _TabsScreenState();
   }
 }
 
-class _TabsScreenState extends ConsumerState<TabsScreen> {
+class _TabsScreenState extends ConsumerState<LayoutScreen> {
   int _selectedPageIndex = 0;
 
   void _selectPage(int index) {

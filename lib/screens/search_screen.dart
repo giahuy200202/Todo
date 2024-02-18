@@ -25,6 +25,12 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
     super.dispose();
   }
 
+  bool checkContainsSubstring(Task task, String str) {
+    return (task.id.toLowerCase().contains(str.toLowerCase()) ||
+        task.title.toLowerCase().contains(str.toLowerCase()) ||
+        task.content.toLowerCase().contains(str.toLowerCase()));
+  }
+
   @override
   Widget build(BuildContext context) {
     var tasks = ref.watch(tasksProvider);
@@ -34,7 +40,7 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
     final leftColumnDiscoverData = ['flutter', 'react native', 'ux'];
     final rightColumnDiscoverData = ['animation', 'riverpod', 'http requests'];
 
-    var getToday = DateTime.now().toUtc();
+    var getToday = DateTime.now();
 
     var getFormatDate = DateTime(getToday.year, getToday.month, getToday.day);
 
@@ -75,12 +81,8 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
                     setState(() {
                       listTask = tasks
                           .where(
-                            (task) => (task.id.toLowerCase().contains(
-                                    searchController.text.toLowerCase()) ||
-                                task.title.toLowerCase().contains(
-                                    searchController.text.toLowerCase()) ||
-                                task.content.toLowerCase().contains(
-                                    searchController.text.toLowerCase())),
+                            (task) => checkContainsSubstring(
+                                task, searchController.text),
                           )
                           .toList();
                     });
@@ -144,18 +146,9 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
                                             searchController.text = data;
                                             listTask = tasks
                                                 .where(
-                                                  (task) => (task.id
-                                                          .toLowerCase()
-                                                          .contains(data
-                                                              .toLowerCase()) ||
-                                                      task.title
-                                                          .toLowerCase()
-                                                          .contains(data
-                                                              .toLowerCase()) ||
-                                                      task.content
-                                                          .toLowerCase()
-                                                          .contains(data
-                                                              .toLowerCase())),
+                                                  (task) =>
+                                                      checkContainsSubstring(
+                                                          task, data),
                                                 )
                                                 .toList();
                                           });
@@ -201,18 +194,9 @@ class _CreateScreenState extends ConsumerState<SearchScreen> {
                                             searchController.text = data;
                                             listTask = tasks
                                                 .where(
-                                                  (task) => (task.id
-                                                          .toLowerCase()
-                                                          .contains(data
-                                                              .toLowerCase()) ||
-                                                      task.title
-                                                          .toLowerCase()
-                                                          .contains(data
-                                                              .toLowerCase()) ||
-                                                      task.content
-                                                          .toLowerCase()
-                                                          .contains(data
-                                                              .toLowerCase())),
+                                                  (task) =>
+                                                      checkContainsSubstring(
+                                                          task, data),
                                                 )
                                                 .toList();
                                           });

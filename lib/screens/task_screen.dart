@@ -21,7 +21,7 @@ class TaskScreen extends ConsumerWidget {
 
     var tasks = ref.watch(tasksProvider);
 
-    var getToday = DateTime.now().toUtc();
+    var getToday = DateTime.now();
 
     var getFormatDate = DateTime(getToday.year, getToday.month, getToday.day);
 

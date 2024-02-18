@@ -12,7 +12,7 @@ class HomeWidget extends ConsumerWidget {
 
   int getNumOfTasks(List task, String category) {
     final dateTimeHelper = DateTimeHelper();
-    var getToday = DateTime.now().toUtc();
+    var getToday = DateTime.now();
     var getFormatDate = DateTime(getToday.year, getToday.month, getToday.day);
     if (category == 'Today') {
       return task

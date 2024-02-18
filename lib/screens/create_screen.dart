@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:todo/providers/options_provider.dart';
-import 'package:todo/widgets/progress_widget.dart';
-import 'package:todo/widgets/category_widget.dart';
-import 'package:todo/screens/task_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/providers/tasks_provider.dart';
 import 'package:todo/models/task.dart';
+import 'package:todo/notifications/local_notifications.dart';
+import 'package:todo/helpers/date_time.dart';
 
 class CreateScreen extends ConsumerStatefulWidget {
   const CreateScreen({super.key});
@@ -40,12 +38,11 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
 
   void presentDatePicker() async {
     final now = DateTime.now();
-    final firstDate = DateTime(now.year - 1, now.month, now.day);
     final pickedDate = await showDatePicker(
       context: context,
       initialEntryMode: DatePickerEntryMode.calendarOnly,
       initialDate: now,
-      firstDate: firstDate,
+      firstDate: now,
       lastDate: DateTime(3000),
       builder: (context, child) {
         return Theme(
@@ -370,6 +367,80 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                           isCompleted: false,
                         ));
 
+                    var getToday = DateTime.now();
+
+                    final dateTimeHelper = DateTimeHelper();
+
+                    var getFormatDate = DateTime(
+                        getToday.year,
+                        getToday.month,
+                        getToday.day,
+                        getToday.hour,
+                        getToday.minute,
+                        getToday.second);
+
+                    print('-----------------');
+                    print('getFormatDate');
+                    print(getFormatDate);
+
+                    int newMinute = selectedTime!.minute - 10;
+                    int newHour = selectedTime!.hour;
+                    if (newMinute < 0) {
+                      newHour = selectedTime!.hour - 1;
+                      newMinute = 60 + newMinute;
+                    }
+
+                    DateTime newDateTime = DateTime(
+                      selectedDate!.year,
+                      selectedDate!.month,
+                      selectedDate!.day,
+                      newHour,
+                      newMinute,
+                    );
+
+                    Duration timeDifference =
+                        newDateTime.difference(getFormatDate);
+
+                    if (dateTimeHelper.isSameDate(
+                            selectedDate!, getFormatDate) &&
+                        newDateTime.compareTo(getFormatDate) > 0) {
+                      int difHour = timeDifference.inHours > 0
+                          ? timeDifference.inHours - 1
+                          : timeDifference.inHours;
+
+                      print('difHour');
+                      print(difHour);
+
+                      int difMin = timeDifference.inMinutes > 0
+                          ? timeDifference.inMinutes - 1
+                          : timeDifference.inMinutes;
+
+                      print('difMin');
+                      print(difMin);
+
+                      int duration = difHour * 360 +
+                          difMin * 60 +
+                          timeDifference.inSeconds;
+
+                      print('selectedTime!');
+                      print(selectedTime!);
+
+                      print('newDateTime');
+                      print(newDateTime);
+
+                      print(duration);
+
+                      print('-----------------');
+
+                      LocalNotifications.showScheduleNotification(
+                        id: tasks.length + 1,
+                        title: 'You have an impending task deadline',
+                        body:
+                            'Task\'s title: ${titleController.text}\nDeadline: ${selectedDate!.day}/${selectedDate!.month}/${selectedDate!.year} - ${selectedTime!.hour}:${selectedTime!.minute}',
+                        payload: 'data',
+                        duration: duration,
+                      );
+                    }
                     // print(tasks);
                     showDialog(
                       context: context,
@@ -388,8 +459,8 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                               Navigator.pop(ctx);
                               titleController.text = '';
                               contentController.text = '';
-                              dateController.text = '';
-                              timeController.text = '';
+                              dateController.text = 'Select date';
+                              timeController.text = 'Select time';
                             },
                             child: const Text(
                               'Ok',
