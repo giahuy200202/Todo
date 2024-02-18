@@ -15,20 +15,11 @@ class NotificationScreen extends ConsumerStatefulWidget {
 }
 
 class _CreateScreenState extends ConsumerState<NotificationScreen> {
-  var searchController = TextEditingController();
-
   List<Task> listTask = [];
 
   @override
   void dispose() {
-    searchController.dispose();
     super.dispose();
-  }
-
-  bool checkContainsSubstring(Task task, String str) {
-    return (task.id.toLowerCase().contains(str.toLowerCase()) ||
-        task.title.toLowerCase().contains(str.toLowerCase()) ||
-        task.content.toLowerCase().contains(str.toLowerCase()));
   }
 
   @override
@@ -58,7 +49,7 @@ class _CreateScreenState extends ConsumerState<NotificationScreen> {
                 child: Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: Text(
-                    "Search",
+                    "Notifications",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 28,
@@ -68,235 +59,27 @@ class _CreateScreenState extends ConsumerState<NotificationScreen> {
               ),
               const SizedBox(height: 15),
               SizedBox(
-                height: 45,
-                child: TextField(
-                  style: const TextStyle(
-                    fontSize: 17,
-                    color: Color.fromARGB(255, 114, 111, 111),
-                    fontWeight: FontWeight.w500,
-                  ),
-                  controller: searchController,
-                  textInputAction: TextInputAction.search,
-                  onSubmitted: (value) {
-                    setState(() {
-                      listTask = tasks
-                          .where(
-                            (task) => checkContainsSubstring(
-                                task, searchController.text),
-                          )
-                          .toList();
-                    });
-                  },
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(9),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(9),
-                      borderSide: const BorderSide(color: Colors.black),
-                    ),
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 8,
-                      horizontal: 15,
-                    ),
-                    prefixIcon: const Icon(Icons.search),
-                    suffixIcon: InkWell(
-                      onTap: () {
-                        setState(() {
-                          searchController.text = '';
-                        });
-                      },
-                      child: const Icon(Icons.clear),
-                    ),
-                    hintText: 'Titles, Contents and More',
-                    hintStyle: const TextStyle(
-                        color: Color.fromARGB(255, 114, 111, 111),
-                        fontWeight: FontWeight.w500),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
-              SizedBox(
-                height: 580,
-                child: searchController.text == ''
-                    ? SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            const Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Discover",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
+                  height: 655,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 10),
+                        ...tasks.map(
+                          (task) => TaskWidget(
+                            id: task.id,
+                            title: task.title,
+                            content: task.content,
+                            date: dateTimeHelper.getDateFormatted(
+                              task.date,
+                              getFormatDate,
+                              task.isCompleted,
                             ),
-                            Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    ...leftColumnDiscoverData.map(
-                                      (data) => InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            searchController.text = data;
-                                            listTask = tasks
-                                                .where(
-                                                  (task) =>
-                                                      checkContainsSubstring(
-                                                          task, data),
-                                                )
-                                                .toList();
-                                          });
-                                        },
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 15),
-                                          child: SizedBox(
-                                            width: 185,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                const Icon(Icons.search),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  data,
-                                                  style: const TextStyle(
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                Column(
-                                  children: [
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    ...rightColumnDiscoverData.map(
-                                      (data) => InkWell(
-                                        onTap: () {
-                                          setState(() {
-                                            searchController.text = data;
-                                            listTask = tasks
-                                                .where(
-                                                  (task) =>
-                                                      checkContainsSubstring(
-                                                          task, data),
-                                                )
-                                                .toList();
-                                          });
-                                        },
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(top: 15),
-                                          child: SizedBox(
-                                            width: 175,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                const Icon(Icons.search),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  data,
-                                                  style: const TextStyle(
-                                                    fontSize: 16,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 25,
-                            ),
-                            const Align(
-                              alignment: Alignment.topLeft,
-                              child: Text(
-                                "Suggested",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            ...tasks.map(
-                              (task) => TaskWidget(
-                                id: task.id,
-                                title: task.title,
-                                content: task.content,
-                                date: dateTimeHelper.getDateFormatted(
-                                  task.date,
-                                  getFormatDate,
-                                  task.isCompleted,
-                                ),
-                                isCompleted: task.isCompleted,
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
-                    : listTask.isEmpty
-                        ? const Padding(
-                            padding: EdgeInsets.only(top: 260),
-                            child: Text(
-                              "No result",
-                              style: TextStyle(
-                                fontSize: 18,
-                              ),
-                            ),
-                          )
-                        : SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                ...listTask.map(
-                                  (task) => TaskWidget(
-                                    id: task.id,
-                                    title: task.title,
-                                    content: task.content,
-                                    date: dateTimeHelper.getDateFormatted(
-                                      task.date,
-                                      getFormatDate,
-                                      task.isCompleted,
-                                    ),
-                                    isCompleted: task.isCompleted,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            isCompleted: task.isCompleted,
                           ),
-              ),
+                        ),
+                      ],
+                    ),
+                  )),
             ],
           ),
         ),

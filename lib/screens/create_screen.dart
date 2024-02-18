@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/models/notification_element.dart';
 import 'package:todo/providers/options_provider.dart';
+import 'package:todo/providers/noti_elements_provider.dart';
 import 'package:todo/providers/tasks_provider.dart';
 import 'package:todo/models/task.dart';
 import 'package:todo/notifications/local_notifications.dart';
@@ -470,6 +472,21 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                         duration: duration,
                       );
                     }
+
+                    //Create notification element
+                    ref
+                        .read(notificationElementsProvider.notifier)
+                        .createNewNotificationElement(NotificationElement(
+                          id: (tasks.length + 1).toString(),
+                          title: titleController.text,
+                          date: DateTime(
+                              selectedDate!.year,
+                              selectedDate!.month,
+                              selectedDate!.day,
+                              selectedTime!.hour,
+                              selectedTime!.minute),
+                        ));
+
                     // print(tasks);
                     showDialog(
                       context: context,
