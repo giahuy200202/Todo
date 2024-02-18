@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo/providers/options_provider.dart';
 import 'package:todo/providers/tasks_provider.dart';
 import 'package:todo/models/task.dart';
 import 'package:todo/notifications/local_notifications.dart';
 import 'package:todo/helpers/date_time.dart';
+import 'package:todo/screens/task_screen.dart';
+import 'package:todo/widgets/category_widget.dart';
 
 class CreateScreen extends ConsumerStatefulWidget {
   const CreateScreen({super.key});
@@ -102,6 +105,29 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
     });
 
     timeController.text = '${pickedTime!.hour}:${pickedTime.minute}';
+  }
+
+  int getNumOfTasks(List task, String category) {
+    final dateTimeHelper = DateTimeHelper();
+    var getToday = DateTime.now();
+    var getFormatDate = DateTime(getToday.year, getToday.month, getToday.day);
+    if (category == 'Today') {
+      return task
+          .where((t) =>
+              dateTimeHelper.isSameDate(t.date, getFormatDate) &&
+              !t.isCompleted)
+          .toList()
+          .length;
+    } else if (category == 'Upcoming') {
+      return task
+          .where((t) => t.date.compareTo(getFormatDate) > 0 && !t.isCompleted)
+          .toList()
+          .length;
+    } else if (category == 'Completed') {
+      return task.where((t) => t.isCompleted).toList().length;
+    } else {
+      return task.length;
+    }
   }
 
   @override
@@ -400,6 +426,9 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
 
                     Duration timeDifference =
                         newDateTime.difference(getFormatDate);
+
+                    print('timeDifference');
+                    print(timeDifference);
 
                     if (dateTimeHelper.isSameDate(
                             selectedDate!, getFormatDate) &&
