@@ -38,7 +38,7 @@ class _TabsScreenState extends ConsumerState<LayoutScreen> {
     } else if (_selectedPageIndex == 2) {
       screen = const CreateScreen();
     } else if (_selectedPageIndex == 3) {
-      screen = const NotificationScreen();
+      screen = const BrowseScreen();
     } else if (_selectedPageIndex == 4) {
       screen = const ProfileScreen();
     }
@@ -75,7 +75,7 @@ class _TabsScreenState extends ConsumerState<LayoutScreen> {
           BottomNavigationBarItem(
             icon: Padding(
               padding: EdgeInsets.only(top: 20),
-              child: Icon(Icons.notifications_active, size: 30),
+              child: Icon(Icons.open_in_browser_rounded, size: 30),
             ),
             label: 'Notifications',
           ),

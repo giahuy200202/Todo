@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo/providers/tasks_provider.dart';
 import 'package:todo/screens/layout_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/notifications/local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
-import 'package:todo/helpers/date_time.dart';
-import 'package:intl/intl.dart';
 
 final theme = ThemeData(
   useMaterial3: true,

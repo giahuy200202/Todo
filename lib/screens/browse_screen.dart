@@ -1,19 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/models/task.dart';
 
-class ProfileScreen extends ConsumerStatefulWidget {
-  const ProfileScreen({super.key});
+class BrowseScreen extends ConsumerStatefulWidget {
+  const BrowseScreen({super.key});
 
   @override
-  ConsumerState<ProfileScreen> createState() {
+  ConsumerState<BrowseScreen> createState() {
     return _CreateScreenState();
   }
 }
 
-class _CreateScreenState extends ConsumerState<ProfileScreen> {
-  List<Task> listTask = [];
-
+class _CreateScreenState extends ConsumerState<BrowseScreen> {
   @override
   void dispose() {
     super.dispose();
@@ -35,7 +32,7 @@ class _CreateScreenState extends ConsumerState<ProfileScreen> {
                 child: Padding(
                   padding: EdgeInsets.only(top: 20),
                   child: Text(
-                    "Profile",
+                    "Browse",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 28,

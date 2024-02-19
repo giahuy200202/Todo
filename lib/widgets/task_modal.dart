@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:todo/screens/task_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo/providers/tasks_provider.dart';
 import 'dart:async';

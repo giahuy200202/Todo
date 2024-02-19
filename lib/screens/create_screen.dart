@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo/models/notification_element.dart';
-import 'package:todo/providers/options_provider.dart';
-import 'package:todo/providers/noti_elements_provider.dart';
 import 'package:todo/providers/tasks_provider.dart';
 import 'package:todo/models/task.dart';
 import 'package:todo/notifications/local_notifications.dart';
 import 'package:todo/helpers/date_time.dart';
-import 'package:todo/screens/task_screen.dart';
-import 'package:todo/widgets/category_widget.dart';
 
 class CreateScreen extends ConsumerStatefulWidget {
   const CreateScreen({super.key});
@@ -407,10 +402,6 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                         getToday.minute,
                         getToday.second);
 
-                    print('-----------------');
-                    print('getFormatDate');
-                    print(getFormatDate);
-
                     int newMinute = selectedTime!.minute - 10;
                     int newHour = selectedTime!.hour;
                     if (newMinute < 0) {
@@ -429,9 +420,6 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                     Duration timeDifference =
                         newDateTime.difference(getFormatDate);
 
-                    print('timeDifference');
-                    print(timeDifference);
-
                     if (dateTimeHelper.isSameDate(
                             selectedDate!, getFormatDate) &&
                         newDateTime.compareTo(getFormatDate) > 0) {
@@ -439,29 +427,13 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                           ? timeDifference.inHours - 1
                           : timeDifference.inHours;
 
-                      print('difHour');
-                      print(difHour);
-
                       int difMin = timeDifference.inMinutes > 0
                           ? timeDifference.inMinutes - 1
                           : timeDifference.inMinutes;
 
-                      print('difMin');
-                      print(difMin);
-
                       int duration = difHour * 360 +
                           difMin * 60 +
                           timeDifference.inSeconds;
-
-                      print('selectedTime!');
-                      print(selectedTime!);
-
-                      print('newDateTime');
-                      print(newDateTime);
-
-                      print(duration);
-
-                      print('-----------------');
 
                       LocalNotifications.showScheduleNotification(
                         id: tasks.length + 1,
@@ -472,20 +444,6 @@ class _CreateScreenState extends ConsumerState<CreateScreen> {
                         duration: duration,
                       );
                     }
-
-                    //Create notification element
-                    ref
-                        .read(notificationElementsProvider.notifier)
-                        .createNewNotificationElement(NotificationElement(
-                          id: (tasks.length + 1).toString(),
-                          title: titleController.text,
-                          date: DateTime(
-                              selectedDate!.year,
-                              selectedDate!.month,
-                              selectedDate!.day,
-                              selectedTime!.hour,
-                              selectedTime!.minute),
-                        ));
 
                     // print(tasks);
                     showDialog(
