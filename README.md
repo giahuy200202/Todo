@@ -1,6 +1,6 @@
 # todo
 
-A new Flutter project.
+Todo is a powerful mobile application designed to help users stay organized and productive. With intuitive features and a minimalist design, Todo makes managing tasks effortless. Users can easily create to-do lists, set deadlines, and prioritize tasks according to their importance. The app also offers customizable categories and reminders, ensuring that nothing falls through the cracks. Whether it's tackling daily chores, planning projects, or setting long-term goals, Todo keeps users focused and on track. With synchronization across devices, users can access their tasks anytime, anywhere, making Todo the ultimate companion for staying productive on the go.
 
 ## Getting Started
 
